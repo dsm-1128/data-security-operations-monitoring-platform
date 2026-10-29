@@ -1,0 +1,12 @@
+.env
+.venv/
+data/
+__pycache__/
+.pytest_cache/
+*.log
+*.zip
+.env.platform
+.backups/
+.test-tmp/
+config/identities.json
+config/*secret*

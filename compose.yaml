@@ -1,0 +1,26 @@
+name: yizhiyun-secops
+services:
+  secops:
+    build: .
+    init: true
+    ports:
+      - "127.0.0.1:${SECOPS_PORT:-8080}:8080"
+    environment:
+      SECOPS_DATA_DIR: /app/data
+      SECOPS_LLM_BASE_URL: ${SECOPS_LLM_BASE_URL:-https://api.openai.com/v1}
+      SECOPS_LLM_API_KEY: ${SECOPS_LLM_API_KEY:-}
+      SECOPS_LLM_MODEL: ${SECOPS_LLM_MODEL:-}
+    volumes:
+      - secops-data:/app/data
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  secops-data:

@@ -1,0 +1,25 @@
+name: Platform tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: test-only-password
+          MYSQL_DATABASE: secops_test
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -ptest-only-password"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12', cache: pip}
+      - run: pip install -r requirements-dev.txt -r requirements-platform.txt -c requirements-platform.lock
+      - run: python -m pytest -q
+        env:
+          SECOPS_TEST_MYSQL_URL: mysql+pymysql://root:test-only-password@127.0.0.1:3306/secops_test
+      - run: python -m compileall -q app
+      - run: node --check app/static/platform.js

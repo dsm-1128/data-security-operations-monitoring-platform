@@ -1,0 +1,67 @@
+const fs=require('fs');
+const path=require('path');
+const assert=require('assert/strict');
+const {pathToFileURL}=require('url');
+const root=__dirname;
+const out=path.join(root,'验证');
+fs.mkdirSync(out,{recursive:true});
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE_PATH||'C:/Users/86187/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+async function run(){
+  const browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+  try{
+    const context=await browser.newContext({viewport:{width:1500,height:1050},deviceScaleFactor:1});
+    const errors=[],network=[];
+    await context.route(/^https?:/,route=>{network.push(route.request().url());return route.abort();});
+    const page=await context.newPage();
+    page.on('pageerror',e=>errors.push(e.message));
+    await page.goto(pathToFileURL(path.join(root,'项目介绍课件.html')).href);
+    await page.evaluate(()=>document.fonts.ready);
+    await page.addStyleTag({content:'html{scroll-behavior:auto!important}'});
+    const inventory=await page.evaluate(()=>{
+      const ids=[...document.querySelectorAll('[id]')].map(n=>n.id);
+      return {h2:document.querySelectorAll('article h2').length,h3:document.querySelectorAll('article h3').length,duplicateIds:ids.filter((v,i)=>ids.indexOf(v)!==i),brokenAnchors:[...document.querySelectorAll('a[href^="#"]')].filter(a=>!document.getElementById(a.hash.slice(1))).map(a=>a.hash),images:[...document.images].map(i=>({src:i.getAttribute('src'),loaded:i.complete&&i.naturalWidth>0})),overflow:document.documentElement.scrollWidth>innerWidth,resources:[...document.querySelectorAll('[src],link[href],a[href]')].map(n=>n.getAttribute('src')||n.getAttribute('href')).filter(v=>v&&!v.startsWith('#')&&!/^https?:/.test(v))};
+    });
+    assert.equal(inventory.h2,8);assert.equal(inventory.h3,54);assert.deepEqual(inventory.duplicateIds,[]);assert.deepEqual(inventory.brokenAnchors,[]);assert.equal(inventory.images.length,6);assert(inventory.images.every(i=>i.loaded));assert.equal(inventory.overflow,false);
+    inventory.resources.forEach(r=>assert(fs.existsSync(path.join(root,decodeURIComponent(r))),`Missing resource ${r}`));
+    const md=fs.readFileSync(path.join(root,'项目介绍课件.md'),'utf8');
+    assert.equal((md.match(/^### /gm)||[]).length,inventory.h3);
+    const body=await page.locator('article').innerText();
+    ['60分钟','15分钟','75%','约30%','80%','qwen3.5-plus','qwen3.5-flash','5,000','25,000','待补充'].forEach(s=>assert(body.includes(s),`Missing text ${s}`));
+    await page.screenshot({path:path.join(out,'桌面概览.png')});
+    await page.locator('#toc-search').fill('审批');
+    const matched=await page.locator('.toc nav a:visible').allTextContents();
+    assert(matched.length>0&&matched.every(s=>s.includes('审批')));
+    await page.locator('.toc nav a:visible').first().click();
+    assert((new URL(page.url())).hash.length>1);
+    await page.locator('#toc-search').fill('完全不存在的小节');
+    assert(await page.locator('#search-empty').isVisible());
+    await page.locator('#toc-search').fill('');
+    await page.getByAltText('系统架构图：入口、业务控制、Agent、工具、数据与运行保障',{exact:true}).screenshot({path:path.join(out,'系统架构图.png')});
+    await page.getByAltText('审批与执行控制图：参数绑定、幂等台账和未知结果查询',{exact:true}).screenshot({path:path.join(out,'审批执行图.png')});
+    await page.getByRole('heading',{name:'6.2 三项项目实现成果',exact:true}).scrollIntoViewIfNeeded();
+    await page.screenshot({path:path.join(out,'成果章节.png')});
+    await page.setViewportSize({width:390,height:844});
+    await page.evaluate(()=>window.scrollTo(0,0));
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await page.screenshot({path:path.join(out,'手机概览.png')});
+    await page.locator('#menu-toggle').click();
+    assert.equal(await page.locator('#menu-toggle').getAttribute('aria-expanded'),'true');
+    await page.locator('.sidebar nav a[data-chapter="4"]').click();
+    assert.equal(await page.locator('#sidebar').evaluate(n=>n.classList.contains('open')),false);
+    assert.equal(await page.locator('#menu-toggle').getAttribute('aria-expanded'),'false');
+    await page.screenshot({path:path.join(out,'手机正文.png')});
+    await page.setViewportSize({width:794,height:1123});
+    await page.emulateMedia({media:'print'});
+    await page.evaluate(()=>window.scrollTo(0,0));
+    assert.equal(await page.locator('.topbar').isVisible(),false);
+    assert.equal(await page.locator('.sidebar').isVisible(),false);
+    const printOverflow=await page.evaluate(()=>[...document.querySelectorAll('table,pre,img')].filter(n=>n.getBoundingClientRect().right>innerWidth+1).length);
+    assert.equal(printOverflow,0);
+    await page.screenshot({path:path.join(out,'打印布局.png')});
+    assert.deepEqual(errors,[]);assert.deepEqual(network,[]);
+    const report={checkedAt:new Date().toISOString(),browser:'Microsoft Edge headless / Playwright',checks:{chapters:8,subsections:54,localSVG:6,localResources:true,uniqueAnchors:true,navigation:true,titleSearch:true,desktopOverflow:false,mobileOverflow:false,mobileMenu:true,printLayout:true,scriptErrors:errors,networkRequests:network,metricsPresent:true},scope:'仅验证课件；未运行应用测试，未执行生产压测。'};
+    fs.writeFileSync(path.join(out,'验证结果.json'),JSON.stringify(report,null,2),'utf8');
+    console.log(JSON.stringify(report,null,2));
+  }finally{await browser.close();}
+}
+run().catch(e=>{console.error(e);process.exit(1)});

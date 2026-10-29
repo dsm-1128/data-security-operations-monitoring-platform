@@ -1,0 +1,8 @@
+{
+  "replace-with-oidc-subject": {
+    "enabled": true,
+    "org": "your-enterprise",
+    "roles": ["analyst"],
+    "assets": ["your-authorized-asset-id"]
+  }
+}

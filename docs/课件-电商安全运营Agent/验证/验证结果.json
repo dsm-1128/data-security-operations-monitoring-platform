@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-17T04:02:19.166Z",
+  "browser": "Microsoft Edge headless / Playwright",
+  "checks": {
+    "chapters": 8,
+    "subsections": 54,
+    "localSVG": 6,
+    "localResources": true,
+    "uniqueAnchors": true,
+    "navigation": true,
+    "titleSearch": true,
+    "desktopOverflow": false,
+    "mobileOverflow": false,
+    "mobileMenu": true,
+    "printLayout": true,
+    "scriptErrors": [],
+    "networkRequests": [],
+    "metricsPresent": true
+  },
+  "scope": "仅验证课件；未运行应用测试，未执行生产压测。"
+}

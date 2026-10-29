@@ -1,0 +1,85 @@
+name: yizhiyun-agent-platform
+x-platform: &platform
+  build:
+    context: .
+    dockerfile: Dockerfile.platform
+  image: yizhiyun-agent-platform:local
+  env_file: .env.platform
+  environment: &environment
+    SECOPS_DATABASE_URL: mysql+pymysql://secops:${SECOPS_DB_PASSWORD:?Set SECOPS_DB_PASSWORD}@mysql/secops?charset=utf8mb4
+    SECOPS_REDIS_URL: redis://:${SECOPS_REDIS_PASSWORD:?Set SECOPS_REDIS_PASSWORD}@redis:6379/0
+    SECOPS_DISPATCH: celery
+  restart: unless-stopped
+  init: true
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+  logging:
+    driver: json-file
+    options: {max-size: 10m, max-file: '3'}
+  volumes:
+    - platform-data:/app/data
+    - ./config:/app/config:ro
+  depends_on:
+    mysql: {condition: service_healthy}
+    redis: {condition: service_healthy}
+
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: secops
+      MYSQL_USER: secops
+      MYSQL_PASSWORD: ${SECOPS_DB_PASSWORD:?Set SECOPS_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${SECOPS_DB_ROOT_PASSWORD:?Set SECOPS_DB_ROOT_PASSWORD}
+    volumes: [platform-mysql:/var/lib/mysql]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD-SHELL, 'MYSQL_PWD="$${MYSQL_PASSWORD}" mysql -u secops -D secops -e "SELECT 1" >/dev/null 2>&1']
+      interval: 5s
+      timeout: 3s
+      retries: 40
+  redis:
+    image: redis:7-alpine
+    environment:
+      REDIS_PASSWORD: ${SECOPS_REDIS_PASSWORD:?Set SECOPS_REDIS_PASSWORD}
+    command: [sh, -c, 'exec redis-server --appendonly yes --maxmemory-policy noeviction --requirepass "$${REDIS_PASSWORD}"']
+    volumes: [platform-redis:/data]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD-SHELL, 'REDISCLI_AUTH="$${REDIS_PASSWORD}" redis-cli ping | grep PONG']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  migrate:
+    <<: *platform
+    command: [python, -m, alembic, upgrade, head]
+    restart: 'no'
+  api:
+    <<: *platform
+    ports: ['127.0.0.1:${SECOPS_PLATFORM_PORT:-18081}:8080']
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8080/readyz', timeout=4)"]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+  worker:
+    <<: *platform
+    command: [celery, -A, app.platform.worker:celery_app, worker, --loglevel=WARNING, --concurrency=2]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+  dispatcher:
+    <<: *platform
+    command: [python, -m, app.platform.dispatch]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+
+volumes:
+  platform-mysql:
+  platform-redis:
+  platform-data:

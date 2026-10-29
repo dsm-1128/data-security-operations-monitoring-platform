@@ -1,0 +1,1 @@
+"""SecOps demonstration application."""

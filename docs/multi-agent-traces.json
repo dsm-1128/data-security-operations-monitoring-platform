@@ -1,0 +1,2238 @@
+{
+  "model": "simulated",
+  "connectors": "simulated",
+  "agent_arch": "multi",
+  "sse_reconnect": "passed",
+  "human_execution_lifecycle": "passed",
+  "scenarios": {
+    "web_attack": {
+      "id": "RUN-76e03fbd111a4b3b85410d8cc7094910",
+      "org": "demo",
+      "case": {
+        "id": "SEC-20261017-ED4DAF",
+        "ip": "198.51.100.23",
+        "name": "订单接口疑似 SQL 注入",
+        "path": "/api/orders/search",
+        "rule": "SQL 注入检测",
+        "asset": "订单服务 / 生产",
+        "count": 126,
+        "error": null,
+        "owner": "应用运维组",
+        "trace": [],
+        "action": null,
+        "report": null,
+        "review": null,
+        "status": "new",
+        "tenant": "demo-retail",
+        "ticket": null,
+        "version": 0,
+        "approval": null,
+        "category": "web",
+        "evidence": [],
+        "scenario": "web_attack",
+        "severity": "high",
+        "execution": null,
+        "simulated": true,
+        "created_at": "2026-10-17T06:11:26.018470+00:00",
+        "updated_at": "2026-10-17T06:11:26.018470+00:00",
+        "verification": null
+      },
+      "mode": "simulated",
+      "owner": "demo-analyst",
+      "trace": [
+        {
+          "at": "2026-10-17T06:11:27.703478+00:00",
+          "kind": "supervisor_decision",
+          "task": "核验目标资产、授权范围和时间窗口",
+          "agent": "TriageAgent",
+          "reason": "核验目标资产、授权范围和时间窗口"
+        },
+        {
+          "at": "2026-10-17T06:11:27.733302+00:00",
+          "kind": "subagent_start",
+          "agent": "TriageAgent",
+          "reason": "核验目标资产、授权范围和时间窗口"
+        },
+        {
+          "at": "2026-10-17T06:11:27.763197+00:00",
+          "kind": "decision",
+          "agent": "TriageAgent",
+          "tools": [
+            "asset_context",
+            "authorization"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:27.795298+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "asset_context",
+          "agent": "TriageAgent",
+          "call_id": "sim-asset_context",
+          "summary": "订单服务 / 生产，负责人：应用运维组",
+          "cache_hit": false,
+          "evidence_id": "EV-5046d2f432d6476e9c2da04409687744"
+        },
+        {
+          "at": "2026-10-17T06:11:27.838641+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "authorization",
+          "agent": "TriageAgent",
+          "call_id": "sim-authorization",
+          "summary": "未匹配到覆盖该来源、资产与时间窗的授权记录。",
+          "cache_hit": false,
+          "evidence_id": "EV-b6f578a010424f3b841d674985c93527"
+        },
+        {
+          "at": "2026-10-17T06:11:27.899816+00:00",
+          "kind": "subagent_end",
+          "agent": "TriageAgent",
+          "reason": "completed",
+          "summary": "TriageAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:27.950179+00:00",
+          "kind": "supervisor_decision",
+          "task": "Web 告警需核对请求、防护和业务审计，授权也须验证行为",
+          "agent": "WebInvestigationAgent",
+          "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+        },
+        {
+          "at": "2026-10-17T06:11:27.998755+00:00",
+          "kind": "subagent_start",
+          "agent": "WebInvestigationAgent",
+          "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+        },
+        {
+          "at": "2026-10-17T06:11:28.049092+00:00",
+          "kind": "decision",
+          "agent": "WebInvestigationAgent",
+          "tools": [
+            "security_logs",
+            "business_audit"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:28.097543+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "security_logs",
+          "agent": "WebInvestigationAgent",
+          "call_id": "sim-security_logs",
+          "summary": "126 条关联请求；WAF 观察 / 部分放行。响应码不能证明攻击成功。",
+          "cache_hit": false,
+          "evidence_id": "EV-2c4b57859d5841e091eeaa53af95e946"
+        },
+        {
+          "at": "2026-10-17T06:11:28.166462+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "business_audit",
+          "agent": "WebInvestigationAgent",
+          "call_id": "sim-business_audit",
+          "summary": "已查时间窗内未见成功敏感操作，应用侧拒绝非法参数。",
+          "cache_hit": false,
+          "evidence_id": "EV-1abe7583280d4e7c862d21252d715978"
+        },
+        {
+          "at": "2026-10-17T06:11:28.202106+00:00",
+          "kind": "subagent_end",
+          "agent": "WebInvestigationAgent",
+          "reason": "completed",
+          "summary": "WebInvestigationAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:28.252586+00:00",
+          "kind": "supervisor_decision",
+          "task": "专业事实已齐备，读取现有手册提出人工审批建议",
+          "agent": "ResponseAgent",
+          "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+        },
+        {
+          "at": "2026-10-17T06:11:28.275485+00:00",
+          "kind": "subagent_start",
+          "agent": "ResponseAgent",
+          "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+        },
+        {
+          "at": "2026-10-17T06:11:28.341259+00:00",
+          "kind": "decision",
+          "agent": "ResponseAgent",
+          "tools": [
+            "playbook"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:28.373753+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "playbook",
+          "agent": "ResponseAgent",
+          "call_id": "sim-playbook",
+          "summary": "命中已审核处置手册；执行前必须明确目标、操作范围与有效期限。",
+          "cache_hit": false,
+          "evidence_id": "EV-6f0c3cf14ecb46e1b4b1f47840741717"
+        },
+        {
+          "at": "2026-10-17T06:11:28.414581+00:00",
+          "kind": "subagent_end",
+          "agent": "ResponseAgent",
+          "reason": "completed",
+          "summary": "ResponseAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:28.445381+00:00",
+          "kind": "report",
+          "verdict": "malicious"
+        }
+      ],
+      "limits": {
+        "tools": 24,
+        "rounds": 12,
+        "tokens": 64000,
+        "seconds": 300
+      },
+      "reason": "调查完成，等待人工复核",
+      "report": {
+        "engine": "离线模拟策略 / Supervisor + SubAgents 测试模式",
+        "impact": "not_observed",
+        "defense": "passed",
+        "missing": [],
+        "summary": "识别到恶意行为，当前已查证据未确认业务损害；防护拦截不等于误报。",
+        "verdict": "malicious",
+        "model_used": false,
+        "evidence_ids": [
+          "EV-5046d2f432d6476e9c2da04409687744",
+          "EV-b6f578a010424f3b841d674985c93527",
+          "EV-2c4b57859d5841e091eeaa53af95e946",
+          "EV-1abe7583280d4e7c862d21252d715978",
+          "EV-6f0c3cf14ecb46e1b4b1f47840741717"
+        ],
+        "generated_at": "2026-10-17T06:11:28.445363+00:00",
+        "model_narrative": "离线模拟 Supervisor 已汇总专业调查与建议，等待人工复核。",
+        "recommendations": [
+          "核验所有证据与授权范围",
+          "高风险动作提交人工审批",
+          "核对执行结果与业务影响"
+        ]
+      },
+      "rounds": 10,
+      "stalls": 0,
+      "status": "waiting_review",
+      "tokens": 0,
+      "created": 1792217486.0186954,
+      "evidence": [
+        {
+          "at": "2026-10-17T06:11:27.793889+00:00",
+          "id": "EV-5046d2f432d6476e9c2da04409687744",
+          "ok": true,
+          "data": {
+            "asset": "订单服务 / 生产",
+            "owner": "应用运维组",
+            "importance": "核心业务"
+          },
+          "tool": "asset_context",
+          "title": "查询业务资产与负责人",
+          "source": "模拟连接器 / asset_context",
+          "archive": {
+            "key": "RUN-76e03fbd111a4b3b85410d8cc7094910/EV-5046d2f432d6476e9c2da04409687744.json",
+            "sha256": "73ff16765c9cee46f7ebdf00f7d29b6c3155d3d38d0abb3ae65fcbee52696d62",
+            "backend": "local"
+          },
+          "summary": "订单服务 / 生产，负责人：应用运维组",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.018470+00:00",
+            "path": "/api/orders/search",
+            "asset": "订单服务 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.018470+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "198.51.100.23"
+          },
+          "content_hash": "65aa2f12bc99c0ded2ddb9f129d4745497743cb3fe75720a9177f86b30d65a3f"
+        },
+        {
+          "at": "2026-10-17T06:11:27.838274+00:00",
+          "id": "EV-b6f578a010424f3b841d674985c93527",
+          "ok": true,
+          "data": {
+            "change_id": null,
+            "authorized": false,
+            "scope_matches": false,
+            "within_window": false
+          },
+          "tool": "authorization",
+          "title": "核验变更与扫描授权",
+          "source": "模拟连接器 / authorization",
+          "archive": {
+            "key": "RUN-76e03fbd111a4b3b85410d8cc7094910/EV-b6f578a010424f3b841d674985c93527.json",
+            "sha256": "79dc662672dd2a54a8651a57e304f7f4631189d1745ee357f84c2521faece1a9",
+            "backend": "local"
+          },
+          "summary": "未匹配到覆盖该来源、资产与时间窗的授权记录。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.018470+00:00",
+            "path": "/api/orders/search",
+            "asset": "订单服务 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.018470+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "198.51.100.23"
+          },
+          "content_hash": "a1e0a50210e63f40506098d3dd2fefa2313945ea4b35548af989a9439e8d5098"
+        },
+        {
+          "at": "2026-10-17T06:11:28.097076+00:00",
+          "id": "EV-2c4b57859d5841e091eeaa53af95e946",
+          "ok": true,
+          "data": {
+            "path": "/api/orders/search",
+            "rule": "SQL 注入检测",
+            "trace_id": "demo-trace-ED4DAF",
+            "source_ip": "198.51.100.23",
+            "http_status": 200,
+            "final_action": "observe",
+            "request_count": 126,
+            "suspicious_pattern": true
+          },
+          "tool": "security_logs",
+          "title": "查询 WAF 请求与防护动作",
+          "source": "模拟连接器 / security_logs",
+          "archive": {
+            "key": "RUN-76e03fbd111a4b3b85410d8cc7094910/EV-2c4b57859d5841e091eeaa53af95e946.json",
+            "sha256": "2bfe7891ad5cdc367a22200787eb5e6b39b781c6d451b067eb9a02e1c723a321",
+            "backend": "local"
+          },
+          "summary": "126 条关联请求；WAF 观察 / 部分放行。响应码不能证明攻击成功。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.018470+00:00",
+            "path": "/api/orders/search",
+            "asset": "订单服务 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.018470+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "198.51.100.23"
+          },
+          "content_hash": "3b93bbd4a513b4f01c81a39c0e6ffadc8042b223c11b21b010b05b8eeeae3a89"
+        },
+        {
+          "at": "2026-10-17T06:11:28.166129+00:00",
+          "id": "EV-1abe7583280d4e7c862d21252d715978",
+          "ok": true,
+          "data": {
+            "coverage": "complete",
+            "export_rows": 0,
+            "sensitive_export": false,
+            "application_rejected_invalid_input": true
+          },
+          "tool": "business_audit",
+          "title": "查询应用与敏感操作审计",
+          "source": "模拟连接器 / business_audit",
+          "archive": {
+            "key": "RUN-76e03fbd111a4b3b85410d8cc7094910/EV-1abe7583280d4e7c862d21252d715978.json",
+            "sha256": "a48cd3c297b6966fb04b44d3a5172aaa26f06ad2380d446d481dfd40f6783f38",
+            "backend": "local"
+          },
+          "summary": "已查时间窗内未见成功敏感操作，应用侧拒绝非法参数。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.018470+00:00",
+            "path": "/api/orders/search",
+            "asset": "订单服务 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.018470+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "198.51.100.23"
+          },
+          "content_hash": "ec53feb93e59c36acd44cb0586af835d048903abbb18b1e441ee1850c207e7bf"
+        },
+        {
+          "at": "2026-10-17T06:11:28.373474+00:00",
+          "id": "EV-6f0c3cf14ecb46e1b4b1f47840741717",
+          "ok": true,
+          "data": {
+            "steps": [
+              "核验原始证据",
+              "联系资产负责人",
+              "审批后模拟临时限制",
+              "复查状态与后续事件"
+            ],
+            "version": "1.2",
+            "document_id": "PB-WEB-01"
+          },
+          "tool": "playbook",
+          "title": "检索内部处置手册",
+          "source": "模拟连接器 / playbook",
+          "archive": {
+            "key": "RUN-76e03fbd111a4b3b85410d8cc7094910/EV-6f0c3cf14ecb46e1b4b1f47840741717.json",
+            "sha256": "1b65a8b61bfd8f3bcb5d689fe8a54954f996cce7738a9584166b9a4ba24df4f0",
+            "backend": "local"
+          },
+          "summary": "命中已审核处置手册；执行前必须明确目标、操作范围与有效期限。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.018470+00:00",
+            "path": "/api/orders/search",
+            "asset": "订单服务 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.018470+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "198.51.100.23"
+          },
+          "content_hash": "f3f22cf6e35d7bc552ce0e8b94a9f804bb78c82ce33ead25b388034f085ea30e"
+        }
+      ],
+      "tool_count": 5,
+      "multi_agent": {
+        "plan": [
+          {
+            "task": "核验目标资产、授权范围和时间窗口",
+            "agent": "TriageAgent",
+            "reason": "核验目标资产、授权范围和时间窗口"
+          },
+          {
+            "task": "Web 告警需核对请求、防护和业务审计，授权也须验证行为",
+            "agent": "WebInvestigationAgent",
+            "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+          },
+          {
+            "task": "专业事实已齐备，读取现有手册提出人工审批建议",
+            "agent": "ResponseAgent",
+            "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+          }
+        ],
+        "phase": "supervisor",
+        "stalls": 0,
+        "results": [
+          {
+            "agent": "TriageAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "TriageAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-5046d2f432d6476e9c2da04409687744",
+              "EV-b6f578a010424f3b841d674985c93527"
+            ]
+          },
+          {
+            "agent": "WebInvestigationAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "WebInvestigationAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-5046d2f432d6476e9c2da04409687744",
+              "EV-b6f578a010424f3b841d674985c93527",
+              "EV-2c4b57859d5841e091eeaa53af95e946",
+              "EV-1abe7583280d4e7c862d21252d715978"
+            ]
+          },
+          {
+            "agent": "ResponseAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "ResponseAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-5046d2f432d6476e9c2da04409687744",
+              "EV-b6f578a010424f3b841d674985c93527",
+              "EV-2c4b57859d5841e091eeaa53af95e946",
+              "EV-1abe7583280d4e7c862d21252d715978",
+              "EV-6f0c3cf14ecb46e1b4b1f47840741717"
+            ]
+          }
+        ],
+        "active_agent": null,
+        "synced_messages": 11,
+        "pending_delegation": null
+      },
+      "active_seconds": 0.11233879200062802,
+      "config_fingerprint": "a0cbc1dd333b0a6b75538d48780ebcea99473a037cefc0905210db960e2a18fc"
+    },
+    "authorized_scan": {
+      "id": "RUN-92b8afccf36044978ef06bdd76b3a19f",
+      "org": "demo",
+      "case": {
+        "id": "SEC-20261017-FD3033",
+        "ip": "192.0.2.66",
+        "name": "授权扫描器触发漏洞探测告警",
+        "path": "/api/products",
+        "rule": "漏洞扫描行为",
+        "asset": "商品中心 / 预发布",
+        "count": 842,
+        "error": null,
+        "owner": "平台运维组",
+        "trace": [],
+        "action": null,
+        "report": null,
+        "review": null,
+        "status": "new",
+        "tenant": "demo-retail",
+        "ticket": null,
+        "version": 0,
+        "approval": null,
+        "category": "web",
+        "evidence": [],
+        "scenario": "authorized_scan",
+        "severity": "medium",
+        "execution": null,
+        "simulated": true,
+        "created_at": "2026-10-17T06:11:26.042690+00:00",
+        "updated_at": "2026-10-17T06:11:26.042690+00:00",
+        "verification": null
+      },
+      "mode": "simulated",
+      "owner": "demo-analyst",
+      "trace": [
+        {
+          "at": "2026-10-17T06:11:27.757860+00:00",
+          "kind": "supervisor_decision",
+          "task": "核验目标资产、授权范围和时间窗口",
+          "agent": "TriageAgent",
+          "reason": "核验目标资产、授权范围和时间窗口"
+        },
+        {
+          "at": "2026-10-17T06:11:27.783207+00:00",
+          "kind": "subagent_start",
+          "agent": "TriageAgent",
+          "reason": "核验目标资产、授权范围和时间窗口"
+        },
+        {
+          "at": "2026-10-17T06:11:27.819121+00:00",
+          "kind": "decision",
+          "agent": "TriageAgent",
+          "tools": [
+            "asset_context",
+            "authorization"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:27.857685+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "asset_context",
+          "agent": "TriageAgent",
+          "call_id": "sim-asset_context",
+          "summary": "商品中心 / 预发布，负责人：平台运维组",
+          "cache_hit": false,
+          "evidence_id": "EV-7a02dc88df1649f4b95fa924ca85e79f"
+        },
+        {
+          "at": "2026-10-17T06:11:27.914411+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "authorization",
+          "agent": "TriageAgent",
+          "call_id": "sim-authorization",
+          "summary": "匹配 CHG-DEMO-017，来源、预发布资产、扫描路径与有效时间均在授权范围内。",
+          "cache_hit": false,
+          "evidence_id": "EV-e8b59758b24c4626a35b5812c71c882d"
+        },
+        {
+          "at": "2026-10-17T06:11:27.976728+00:00",
+          "kind": "subagent_end",
+          "agent": "TriageAgent",
+          "reason": "completed",
+          "summary": "TriageAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:28.023976+00:00",
+          "kind": "supervisor_decision",
+          "task": "Web 告警需核对请求、防护和业务审计，授权也须验证行为",
+          "agent": "WebInvestigationAgent",
+          "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+        },
+        {
+          "at": "2026-10-17T06:11:28.061995+00:00",
+          "kind": "subagent_start",
+          "agent": "WebInvestigationAgent",
+          "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+        },
+        {
+          "at": "2026-10-17T06:11:28.137927+00:00",
+          "kind": "decision",
+          "agent": "WebInvestigationAgent",
+          "tools": [
+            "security_logs",
+            "business_audit"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:28.172057+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "security_logs",
+          "agent": "WebInvestigationAgent",
+          "call_id": "sim-security_logs",
+          "summary": "842 条关联请求；WAF 观察 / 部分放行。响应码不能证明攻击成功。",
+          "cache_hit": false,
+          "evidence_id": "EV-7fb4f9045f3b403291e6fd9fa0f62a22"
+        },
+        {
+          "at": "2026-10-17T06:11:28.230446+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "business_audit",
+          "agent": "WebInvestigationAgent",
+          "call_id": "sim-business_audit",
+          "summary": "已查时间窗内未见成功敏感操作，应用侧拒绝非法参数。",
+          "cache_hit": false,
+          "evidence_id": "EV-ed2f365e931747958e1db3b9f2afe805"
+        },
+        {
+          "at": "2026-10-17T06:11:28.261970+00:00",
+          "kind": "subagent_end",
+          "agent": "WebInvestigationAgent",
+          "reason": "completed",
+          "summary": "WebInvestigationAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:28.290144+00:00",
+          "kind": "supervisor_decision",
+          "task": "专业事实已齐备，读取现有手册提出人工审批建议",
+          "agent": "ResponseAgent",
+          "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+        },
+        {
+          "at": "2026-10-17T06:11:28.365393+00:00",
+          "kind": "subagent_start",
+          "agent": "ResponseAgent",
+          "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+        },
+        {
+          "at": "2026-10-17T06:11:28.391802+00:00",
+          "kind": "decision",
+          "agent": "ResponseAgent",
+          "tools": [
+            "playbook"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:28.438496+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "playbook",
+          "agent": "ResponseAgent",
+          "call_id": "sim-playbook",
+          "summary": "命中已审核处置手册；执行前必须明确目标、操作范围与有效期限。",
+          "cache_hit": false,
+          "evidence_id": "EV-fe58dc058996488eaa89f9d6ad1e5f87"
+        },
+        {
+          "at": "2026-10-17T06:11:28.469477+00:00",
+          "kind": "subagent_end",
+          "agent": "ResponseAgent",
+          "reason": "completed",
+          "summary": "ResponseAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:28.513789+00:00",
+          "kind": "report",
+          "verdict": "authorized"
+        }
+      ],
+      "limits": {
+        "tools": 24,
+        "rounds": 12,
+        "tokens": 64000,
+        "seconds": 300
+      },
+      "reason": "调查完成，等待人工复核",
+      "report": {
+        "engine": "离线模拟策略 / Supervisor + SubAgents 测试模式",
+        "impact": "not_observed",
+        "defense": "passed",
+        "missing": [],
+        "summary": "已获得匹配范围与时间的授权证据，请人工核验后归档。",
+        "verdict": "authorized",
+        "model_used": false,
+        "evidence_ids": [
+          "EV-7a02dc88df1649f4b95fa924ca85e79f",
+          "EV-e8b59758b24c4626a35b5812c71c882d",
+          "EV-7fb4f9045f3b403291e6fd9fa0f62a22",
+          "EV-ed2f365e931747958e1db3b9f2afe805",
+          "EV-fe58dc058996488eaa89f9d6ad1e5f87"
+        ],
+        "generated_at": "2026-10-17T06:11:28.513768+00:00",
+        "model_narrative": "离线模拟 Supervisor 已汇总专业调查与建议，等待人工复核。",
+        "recommendations": [
+          "核验所有证据与授权范围",
+          "高风险动作提交人工审批",
+          "核对执行结果与业务影响"
+        ]
+      },
+      "rounds": 10,
+      "stalls": 0,
+      "status": "waiting_review",
+      "tokens": 0,
+      "created": 1792217486.042849,
+      "evidence": [
+        {
+          "at": "2026-10-17T06:11:27.855432+00:00",
+          "id": "EV-7a02dc88df1649f4b95fa924ca85e79f",
+          "ok": true,
+          "data": {
+            "asset": "商品中心 / 预发布",
+            "owner": "平台运维组",
+            "importance": "非生产环境"
+          },
+          "tool": "asset_context",
+          "title": "查询业务资产与负责人",
+          "source": "模拟连接器 / asset_context",
+          "archive": {
+            "key": "RUN-92b8afccf36044978ef06bdd76b3a19f/EV-7a02dc88df1649f4b95fa924ca85e79f.json",
+            "sha256": "db97d01248fc2a06fbe3563218fd61c8a1d9face020f32882adcebf423fe8582",
+            "backend": "local"
+          },
+          "summary": "商品中心 / 预发布，负责人：平台运维组",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.042690+00:00",
+            "path": "/api/products",
+            "asset": "商品中心 / 预发布",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.042690+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "192.0.2.66"
+          },
+          "content_hash": "6f12d0d03cec9580d06fd967d550001d35a531161c147f388f222872a5c367c6"
+        },
+        {
+          "at": "2026-10-17T06:11:27.911392+00:00",
+          "id": "EV-e8b59758b24c4626a35b5812c71c882d",
+          "ok": true,
+          "data": {
+            "change_id": "CHG-DEMO-017",
+            "authorized": true,
+            "scope_matches": true,
+            "within_window": true
+          },
+          "tool": "authorization",
+          "title": "核验变更与扫描授权",
+          "source": "模拟连接器 / authorization",
+          "archive": {
+            "key": "RUN-92b8afccf36044978ef06bdd76b3a19f/EV-e8b59758b24c4626a35b5812c71c882d.json",
+            "sha256": "a1291bb02be1b0bb5f176fc0ad160b8c592f13c038e2247e902a4dbd8f2c86dc",
+            "backend": "local"
+          },
+          "summary": "匹配 CHG-DEMO-017，来源、预发布资产、扫描路径与有效时间均在授权范围内。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.042690+00:00",
+            "path": "/api/products",
+            "asset": "商品中心 / 预发布",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.042690+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "192.0.2.66"
+          },
+          "content_hash": "79003d43966317abd4be66546e247b0a148ef28f5fd29dd39ebf1525873e6cff"
+        },
+        {
+          "at": "2026-10-17T06:11:28.171785+00:00",
+          "id": "EV-7fb4f9045f3b403291e6fd9fa0f62a22",
+          "ok": true,
+          "data": {
+            "path": "/api/products",
+            "rule": "漏洞扫描行为",
+            "trace_id": "demo-trace-FD3033",
+            "source_ip": "192.0.2.66",
+            "http_status": 200,
+            "final_action": "observe",
+            "request_count": 842,
+            "suspicious_pattern": false
+          },
+          "tool": "security_logs",
+          "title": "查询 WAF 请求与防护动作",
+          "source": "模拟连接器 / security_logs",
+          "archive": {
+            "key": "RUN-92b8afccf36044978ef06bdd76b3a19f/EV-7fb4f9045f3b403291e6fd9fa0f62a22.json",
+            "sha256": "c50eb30a12dd74723a64859831025cbf30b1c0827401e2ab8ca889cc5a80569a",
+            "backend": "local"
+          },
+          "summary": "842 条关联请求；WAF 观察 / 部分放行。响应码不能证明攻击成功。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.042690+00:00",
+            "path": "/api/products",
+            "asset": "商品中心 / 预发布",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.042690+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "192.0.2.66"
+          },
+          "content_hash": "9016e34f0187cabe4f0b097cf5a57180d5f8edee02b930693167f08832296598"
+        },
+        {
+          "at": "2026-10-17T06:11:28.230108+00:00",
+          "id": "EV-ed2f365e931747958e1db3b9f2afe805",
+          "ok": true,
+          "data": {
+            "coverage": "complete",
+            "export_rows": 0,
+            "sensitive_export": false,
+            "application_rejected_invalid_input": false
+          },
+          "tool": "business_audit",
+          "title": "查询应用与敏感操作审计",
+          "source": "模拟连接器 / business_audit",
+          "archive": {
+            "key": "RUN-92b8afccf36044978ef06bdd76b3a19f/EV-ed2f365e931747958e1db3b9f2afe805.json",
+            "sha256": "4971743f63d4e80a941fa5ca86234a2ab93e907383d0f6ec336d910442316683",
+            "backend": "local"
+          },
+          "summary": "已查时间窗内未见成功敏感操作，应用侧拒绝非法参数。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.042690+00:00",
+            "path": "/api/products",
+            "asset": "商品中心 / 预发布",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.042690+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "192.0.2.66"
+          },
+          "content_hash": "a2bc22148546f5dda1b5b152d73e3e56dc98bd28aebb54f49e0045adb5d34cda"
+        },
+        {
+          "at": "2026-10-17T06:11:28.438247+00:00",
+          "id": "EV-fe58dc058996488eaa89f9d6ad1e5f87",
+          "ok": true,
+          "data": {
+            "steps": [
+              "核验原始证据",
+              "联系资产负责人",
+              "审批后模拟临时限制",
+              "复查状态与后续事件"
+            ],
+            "version": "1.2",
+            "document_id": "PB-WEB-01"
+          },
+          "tool": "playbook",
+          "title": "检索内部处置手册",
+          "source": "模拟连接器 / playbook",
+          "archive": {
+            "key": "RUN-92b8afccf36044978ef06bdd76b3a19f/EV-fe58dc058996488eaa89f9d6ad1e5f87.json",
+            "sha256": "a9a1e74ba28eb965624a345f1889b3ceec9d54893519dcbd0349d83b7bfa18e9",
+            "backend": "local"
+          },
+          "summary": "命中已审核处置手册；执行前必须明确目标、操作范围与有效期限。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.042690+00:00",
+            "path": "/api/products",
+            "asset": "商品中心 / 预发布",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.042690+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "192.0.2.66"
+          },
+          "content_hash": "e2250219c105098ca530914f6032e3e6c3721386a0a1f3244b4d807ce70b4848"
+        }
+      ],
+      "tool_count": 5,
+      "multi_agent": {
+        "plan": [
+          {
+            "task": "核验目标资产、授权范围和时间窗口",
+            "agent": "TriageAgent",
+            "reason": "核验目标资产、授权范围和时间窗口"
+          },
+          {
+            "task": "Web 告警需核对请求、防护和业务审计，授权也须验证行为",
+            "agent": "WebInvestigationAgent",
+            "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+          },
+          {
+            "task": "专业事实已齐备，读取现有手册提出人工审批建议",
+            "agent": "ResponseAgent",
+            "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+          }
+        ],
+        "phase": "supervisor",
+        "stalls": 0,
+        "results": [
+          {
+            "agent": "TriageAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "TriageAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-7a02dc88df1649f4b95fa924ca85e79f",
+              "EV-e8b59758b24c4626a35b5812c71c882d"
+            ]
+          },
+          {
+            "agent": "WebInvestigationAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "WebInvestigationAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-7a02dc88df1649f4b95fa924ca85e79f",
+              "EV-e8b59758b24c4626a35b5812c71c882d",
+              "EV-7fb4f9045f3b403291e6fd9fa0f62a22",
+              "EV-ed2f365e931747958e1db3b9f2afe805"
+            ]
+          },
+          {
+            "agent": "ResponseAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "ResponseAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-7a02dc88df1649f4b95fa924ca85e79f",
+              "EV-e8b59758b24c4626a35b5812c71c882d",
+              "EV-7fb4f9045f3b403291e6fd9fa0f62a22",
+              "EV-ed2f365e931747958e1db3b9f2afe805",
+              "EV-fe58dc058996488eaa89f9d6ad1e5f87"
+            ]
+          }
+        ],
+        "active_agent": null,
+        "synced_messages": 11,
+        "pending_delegation": null
+      },
+      "active_seconds": 0.11836811199646036,
+      "config_fingerprint": "a0cbc1dd333b0a6b75538d48780ebcea99473a037cefc0905210db960e2a18fc"
+    },
+    "blocked_attack": {
+      "id": "RUN-10a1465f466d4977a306af0b50c79361",
+      "org": "demo",
+      "case": {
+        "id": "SEC-20261017-83AEDD",
+        "ip": "203.0.113.19",
+        "name": "登录接口恶意探测已被 WAF 拦截",
+        "path": "/api/auth/login",
+        "rule": "恶意扫描与注入探测",
+        "asset": "用户中心 / 生产",
+        "count": 281,
+        "error": null,
+        "owner": "平台运维组",
+        "trace": [],
+        "action": null,
+        "report": null,
+        "review": null,
+        "status": "new",
+        "tenant": "demo-retail",
+        "ticket": null,
+        "version": 0,
+        "approval": null,
+        "category": "web",
+        "evidence": [],
+        "scenario": "blocked_attack",
+        "severity": "medium",
+        "execution": null,
+        "simulated": true,
+        "created_at": "2026-10-17T06:11:26.064815+00:00",
+        "updated_at": "2026-10-17T06:11:26.064815+00:00",
+        "verification": null
+      },
+      "mode": "simulated",
+      "owner": "demo-analyst",
+      "trace": [
+        {
+          "at": "2026-10-17T06:11:28.525993+00:00",
+          "kind": "supervisor_decision",
+          "task": "核验目标资产、授权范围和时间窗口",
+          "agent": "TriageAgent",
+          "reason": "核验目标资产、授权范围和时间窗口"
+        },
+        {
+          "at": "2026-10-17T06:11:28.555310+00:00",
+          "kind": "subagent_start",
+          "agent": "TriageAgent",
+          "reason": "核验目标资产、授权范围和时间窗口"
+        },
+        {
+          "at": "2026-10-17T06:11:28.589032+00:00",
+          "kind": "decision",
+          "agent": "TriageAgent",
+          "tools": [
+            "asset_context",
+            "authorization"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:28.621753+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "asset_context",
+          "agent": "TriageAgent",
+          "call_id": "sim-asset_context",
+          "summary": "用户中心 / 生产，负责人：平台运维组",
+          "cache_hit": false,
+          "evidence_id": "EV-a0fd4bfecdec4fb6b6d260d7d578bc0c"
+        },
+        {
+          "at": "2026-10-17T06:11:28.660110+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "authorization",
+          "agent": "TriageAgent",
+          "call_id": "sim-authorization",
+          "summary": "未匹配到覆盖该来源、资产与时间窗的授权记录。",
+          "cache_hit": false,
+          "evidence_id": "EV-d472b6c6fb6844beba7acce440b90d07"
+        },
+        {
+          "at": "2026-10-17T06:11:28.699113+00:00",
+          "kind": "subagent_end",
+          "agent": "TriageAgent",
+          "reason": "completed",
+          "summary": "TriageAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:28.734794+00:00",
+          "kind": "supervisor_decision",
+          "task": "Web 告警需核对请求、防护和业务审计，授权也须验证行为",
+          "agent": "WebInvestigationAgent",
+          "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+        },
+        {
+          "at": "2026-10-17T06:11:28.772744+00:00",
+          "kind": "subagent_start",
+          "agent": "WebInvestigationAgent",
+          "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+        },
+        {
+          "at": "2026-10-17T06:11:28.802613+00:00",
+          "kind": "decision",
+          "agent": "WebInvestigationAgent",
+          "tools": [
+            "security_logs",
+            "business_audit"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:28.834617+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "security_logs",
+          "agent": "WebInvestigationAgent",
+          "call_id": "sim-security_logs",
+          "summary": "281 条关联请求；WAF 已拦截。响应码不能证明攻击成功。",
+          "cache_hit": false,
+          "evidence_id": "EV-5842a37df2814b6dbe6bdb98815ac777"
+        },
+        {
+          "at": "2026-10-17T06:11:28.862602+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "business_audit",
+          "agent": "WebInvestigationAgent",
+          "call_id": "sim-business_audit",
+          "summary": "已查时间窗内未见成功敏感操作，应用侧拒绝非法参数。",
+          "cache_hit": false,
+          "evidence_id": "EV-a088f6a9e8cd4075b841923eb1b97e8b"
+        },
+        {
+          "at": "2026-10-17T06:11:28.914731+00:00",
+          "kind": "subagent_end",
+          "agent": "WebInvestigationAgent",
+          "reason": "completed",
+          "summary": "WebInvestigationAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:28.946378+00:00",
+          "kind": "supervisor_decision",
+          "task": "专业事实已齐备，读取现有手册提出人工审批建议",
+          "agent": "ResponseAgent",
+          "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+        },
+        {
+          "at": "2026-10-17T06:11:28.976446+00:00",
+          "kind": "subagent_start",
+          "agent": "ResponseAgent",
+          "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+        },
+        {
+          "at": "2026-10-17T06:11:29.046181+00:00",
+          "kind": "decision",
+          "agent": "ResponseAgent",
+          "tools": [
+            "playbook"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:29.078903+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "playbook",
+          "agent": "ResponseAgent",
+          "call_id": "sim-playbook",
+          "summary": "命中已审核处置手册；执行前必须明确目标、操作范围与有效期限。",
+          "cache_hit": false,
+          "evidence_id": "EV-d8fb9bb6c35f4cf2a2e6be60ff60f585"
+        },
+        {
+          "at": "2026-10-17T06:11:29.112286+00:00",
+          "kind": "subagent_end",
+          "agent": "ResponseAgent",
+          "reason": "completed",
+          "summary": "ResponseAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:29.145884+00:00",
+          "kind": "report",
+          "verdict": "malicious"
+        }
+      ],
+      "limits": {
+        "tools": 24,
+        "rounds": 12,
+        "tokens": 64000,
+        "seconds": 300
+      },
+      "reason": "调查完成，等待人工复核",
+      "report": {
+        "engine": "离线模拟策略 / Supervisor + SubAgents 测试模式",
+        "impact": "not_observed",
+        "defense": "blocked",
+        "missing": [],
+        "summary": "识别到恶意行为，当前已查证据未确认业务损害；防护拦截不等于误报。",
+        "verdict": "malicious",
+        "model_used": false,
+        "evidence_ids": [
+          "EV-a0fd4bfecdec4fb6b6d260d7d578bc0c",
+          "EV-d472b6c6fb6844beba7acce440b90d07",
+          "EV-5842a37df2814b6dbe6bdb98815ac777",
+          "EV-a088f6a9e8cd4075b841923eb1b97e8b",
+          "EV-d8fb9bb6c35f4cf2a2e6be60ff60f585"
+        ],
+        "generated_at": "2026-10-17T06:11:29.145868+00:00",
+        "model_narrative": "离线模拟 Supervisor 已汇总专业调查与建议，等待人工复核。",
+        "recommendations": [
+          "核验所有证据与授权范围",
+          "高风险动作提交人工审批",
+          "核对执行结果与业务影响"
+        ]
+      },
+      "rounds": 10,
+      "stalls": 0,
+      "status": "waiting_review",
+      "tokens": 0,
+      "created": 1792217486.0649369,
+      "evidence": [
+        {
+          "at": "2026-10-17T06:11:28.620865+00:00",
+          "id": "EV-a0fd4bfecdec4fb6b6d260d7d578bc0c",
+          "ok": true,
+          "data": {
+            "asset": "用户中心 / 生产",
+            "owner": "平台运维组",
+            "importance": "核心业务"
+          },
+          "tool": "asset_context",
+          "title": "查询业务资产与负责人",
+          "source": "模拟连接器 / asset_context",
+          "archive": {
+            "key": "RUN-10a1465f466d4977a306af0b50c79361/EV-a0fd4bfecdec4fb6b6d260d7d578bc0c.json",
+            "sha256": "18d7d19b9e710beb419e574a704b79ca310d7d07c5660ff846f733549f62bb77",
+            "backend": "local"
+          },
+          "summary": "用户中心 / 生产，负责人：平台运维组",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.064815+00:00",
+            "path": "/api/auth/login",
+            "asset": "用户中心 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.064815+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "203.0.113.19"
+          },
+          "content_hash": "915ce2364ee7cea02f3a69714955ba7266d5810caa62fbb4dda9f324960ed240"
+        },
+        {
+          "at": "2026-10-17T06:11:28.659846+00:00",
+          "id": "EV-d472b6c6fb6844beba7acce440b90d07",
+          "ok": true,
+          "data": {
+            "change_id": null,
+            "authorized": false,
+            "scope_matches": false,
+            "within_window": false
+          },
+          "tool": "authorization",
+          "title": "核验变更与扫描授权",
+          "source": "模拟连接器 / authorization",
+          "archive": {
+            "key": "RUN-10a1465f466d4977a306af0b50c79361/EV-d472b6c6fb6844beba7acce440b90d07.json",
+            "sha256": "36743d107a5a03b264ddf8dc194d01cb703b006f932a6373dd5ba45845c3476d",
+            "backend": "local"
+          },
+          "summary": "未匹配到覆盖该来源、资产与时间窗的授权记录。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.064815+00:00",
+            "path": "/api/auth/login",
+            "asset": "用户中心 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.064815+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "203.0.113.19"
+          },
+          "content_hash": "bf8b2e9efa4d3191f29a54498fc0793db9825c491d2e231b4e7d6b9c17195277"
+        },
+        {
+          "at": "2026-10-17T06:11:28.834364+00:00",
+          "id": "EV-5842a37df2814b6dbe6bdb98815ac777",
+          "ok": true,
+          "data": {
+            "path": "/api/auth/login",
+            "rule": "恶意扫描与注入探测",
+            "trace_id": "demo-trace-83AEDD",
+            "source_ip": "203.0.113.19",
+            "http_status": 403,
+            "final_action": "block",
+            "request_count": 281,
+            "suspicious_pattern": true
+          },
+          "tool": "security_logs",
+          "title": "查询 WAF 请求与防护动作",
+          "source": "模拟连接器 / security_logs",
+          "archive": {
+            "key": "RUN-10a1465f466d4977a306af0b50c79361/EV-5842a37df2814b6dbe6bdb98815ac777.json",
+            "sha256": "1f497a398b79421f861aae3de28757977f147c27238ffc3757fe9a9e852fe950",
+            "backend": "local"
+          },
+          "summary": "281 条关联请求；WAF 已拦截。响应码不能证明攻击成功。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.064815+00:00",
+            "path": "/api/auth/login",
+            "asset": "用户中心 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.064815+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "203.0.113.19"
+          },
+          "content_hash": "fc4f149fdf0abe9a3a7e7a2ddbde328ab7b95759284a3c72b64014cfc07726b2"
+        },
+        {
+          "at": "2026-10-17T06:11:28.862359+00:00",
+          "id": "EV-a088f6a9e8cd4075b841923eb1b97e8b",
+          "ok": true,
+          "data": {
+            "coverage": "complete",
+            "export_rows": 0,
+            "sensitive_export": false,
+            "application_rejected_invalid_input": true
+          },
+          "tool": "business_audit",
+          "title": "查询应用与敏感操作审计",
+          "source": "模拟连接器 / business_audit",
+          "archive": {
+            "key": "RUN-10a1465f466d4977a306af0b50c79361/EV-a088f6a9e8cd4075b841923eb1b97e8b.json",
+            "sha256": "b54ef28eda0410d8da5e49c25133fe1305bf2076bd6b66975e41a331d8030b56",
+            "backend": "local"
+          },
+          "summary": "已查时间窗内未见成功敏感操作，应用侧拒绝非法参数。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.064815+00:00",
+            "path": "/api/auth/login",
+            "asset": "用户中心 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.064815+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "203.0.113.19"
+          },
+          "content_hash": "b87353172d766386ee609881f763f5a31c00eb0d53cda0ce88e4f352dd155887"
+        },
+        {
+          "at": "2026-10-17T06:11:29.078647+00:00",
+          "id": "EV-d8fb9bb6c35f4cf2a2e6be60ff60f585",
+          "ok": true,
+          "data": {
+            "steps": [
+              "核验原始证据",
+              "联系资产负责人",
+              "审批后模拟临时限制",
+              "复查状态与后续事件"
+            ],
+            "version": "1.2",
+            "document_id": "PB-WEB-01"
+          },
+          "tool": "playbook",
+          "title": "检索内部处置手册",
+          "source": "模拟连接器 / playbook",
+          "archive": {
+            "key": "RUN-10a1465f466d4977a306af0b50c79361/EV-d8fb9bb6c35f4cf2a2e6be60ff60f585.json",
+            "sha256": "31ce37fe519c567f1843d1f7270dbaa2453f993b710dd0d703cd9aac0c8aacd7",
+            "backend": "local"
+          },
+          "summary": "命中已审核处置手册；执行前必须明确目标、操作范围与有效期限。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.064815+00:00",
+            "path": "/api/auth/login",
+            "asset": "用户中心 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.064815+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "203.0.113.19"
+          },
+          "content_hash": "a5e3d03581a2062693d0fd0587adae86dcf1733d548b52f214fe3c54c00a3987"
+        }
+      ],
+      "tool_count": 5,
+      "multi_agent": {
+        "plan": [
+          {
+            "task": "核验目标资产、授权范围和时间窗口",
+            "agent": "TriageAgent",
+            "reason": "核验目标资产、授权范围和时间窗口"
+          },
+          {
+            "task": "Web 告警需核对请求、防护和业务审计，授权也须验证行为",
+            "agent": "WebInvestigationAgent",
+            "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+          },
+          {
+            "task": "专业事实已齐备，读取现有手册提出人工审批建议",
+            "agent": "ResponseAgent",
+            "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+          }
+        ],
+        "phase": "supervisor",
+        "stalls": 0,
+        "results": [
+          {
+            "agent": "TriageAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "TriageAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-a0fd4bfecdec4fb6b6d260d7d578bc0c",
+              "EV-d472b6c6fb6844beba7acce440b90d07"
+            ]
+          },
+          {
+            "agent": "WebInvestigationAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "WebInvestigationAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-a0fd4bfecdec4fb6b6d260d7d578bc0c",
+              "EV-d472b6c6fb6844beba7acce440b90d07",
+              "EV-5842a37df2814b6dbe6bdb98815ac777",
+              "EV-a088f6a9e8cd4075b841923eb1b97e8b"
+            ]
+          },
+          {
+            "agent": "ResponseAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "ResponseAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-a0fd4bfecdec4fb6b6d260d7d578bc0c",
+              "EV-d472b6c6fb6844beba7acce440b90d07",
+              "EV-5842a37df2814b6dbe6bdb98815ac777",
+              "EV-a088f6a9e8cd4075b841923eb1b97e8b",
+              "EV-d8fb9bb6c35f4cf2a2e6be60ff60f585"
+            ]
+          }
+        ],
+        "active_agent": null,
+        "synced_messages": 11,
+        "pending_delegation": null
+      },
+      "active_seconds": 0.07365778099938325,
+      "config_fingerprint": "a0cbc1dd333b0a6b75538d48780ebcea99473a037cefc0905210db960e2a18fc"
+    },
+    "account_anomaly": {
+      "id": "RUN-db0220ed74bf428c938cfa0bfa2cc731",
+      "org": "demo",
+      "case": {
+        "id": "SEC-20261017-E2F3CF",
+        "ip": "203.0.113.48",
+        "name": "运营账号异地登录后批量导出",
+        "path": "/admin/customers/export",
+        "rule": "异常登录与敏感操作关联",
+        "asset": "运营管理后台 / 生产",
+        "count": 18,
+        "error": null,
+        "owner": "业务安全组",
+        "trace": [],
+        "action": null,
+        "report": null,
+        "review": null,
+        "status": "new",
+        "tenant": "demo-retail",
+        "ticket": null,
+        "account": "ops_demo_07",
+        "version": 0,
+        "approval": null,
+        "category": "identity",
+        "evidence": [],
+        "scenario": "account_anomaly",
+        "severity": "critical",
+        "execution": null,
+        "simulated": true,
+        "created_at": "2026-10-17T06:11:26.084067+00:00",
+        "updated_at": "2026-10-17T06:11:26.084067+00:00",
+        "verification": null
+      },
+      "mode": "simulated",
+      "owner": "demo-analyst",
+      "trace": [
+        {
+          "at": "2026-10-17T06:11:28.573782+00:00",
+          "kind": "supervisor_decision",
+          "task": "核验目标资产、授权范围和时间窗口",
+          "agent": "TriageAgent",
+          "reason": "核验目标资产、授权范围和时间窗口"
+        },
+        {
+          "at": "2026-10-17T06:11:28.611120+00:00",
+          "kind": "subagent_start",
+          "agent": "TriageAgent",
+          "reason": "核验目标资产、授权范围和时间窗口"
+        },
+        {
+          "at": "2026-10-17T06:11:28.639574+00:00",
+          "kind": "decision",
+          "agent": "TriageAgent",
+          "tools": [
+            "asset_context",
+            "authorization"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:28.679614+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "asset_context",
+          "agent": "TriageAgent",
+          "call_id": "sim-asset_context",
+          "summary": "运营管理后台 / 生产，负责人：业务安全组",
+          "cache_hit": false,
+          "evidence_id": "EV-f3a23b7831ac4564bdaf447c67619930"
+        },
+        {
+          "at": "2026-10-17T06:11:28.712450+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "authorization",
+          "agent": "TriageAgent",
+          "call_id": "sim-authorization",
+          "summary": "未匹配到覆盖该来源、资产与时间窗的授权记录。",
+          "cache_hit": false,
+          "evidence_id": "EV-ba6fc8afb34a4fc296d9f5bdd44e92eb"
+        },
+        {
+          "at": "2026-10-17T06:11:28.752759+00:00",
+          "kind": "subagent_end",
+          "agent": "TriageAgent",
+          "reason": "completed",
+          "summary": "TriageAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:28.781321+00:00",
+          "kind": "supervisor_decision",
+          "task": "账号事件或已发现敏感导出，关联认证与操作记录",
+          "agent": "IdentityInvestigationAgent",
+          "reason": "账号事件或已发现敏感导出，关联认证与操作记录"
+        },
+        {
+          "at": "2026-10-17T06:11:28.808756+00:00",
+          "kind": "subagent_start",
+          "agent": "IdentityInvestigationAgent",
+          "reason": "账号事件或已发现敏感导出，关联认证与操作记录"
+        },
+        {
+          "at": "2026-10-17T06:11:28.844921+00:00",
+          "kind": "decision",
+          "agent": "IdentityInvestigationAgent",
+          "tools": [
+            "auth_logs",
+            "business_audit",
+            "security_logs"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:28.878747+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "auth_logs",
+          "agent": "IdentityInvestigationAgent",
+          "call_id": "sim-auth_logs",
+          "summary": "模拟账号在异常来源登录，账号负责人确认非本人操作；未通过 MFA。",
+          "cache_hit": false,
+          "evidence_id": "EV-9bd11c58c1ed40c4a1a2a29f636e5790"
+        },
+        {
+          "at": "2026-10-17T06:11:28.939285+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "business_audit",
+          "agent": "IdentityInvestigationAgent",
+          "call_id": "sim-business_audit",
+          "summary": "发现异常账号导出 2,800 条模拟客户记录，导出任务执行成功。",
+          "cache_hit": false,
+          "evidence_id": "EV-262a31954cc447c89b9dfbc2325c8ac7"
+        },
+        {
+          "at": "2026-10-17T06:11:28.969956+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "security_logs",
+          "agent": "IdentityInvestigationAgent",
+          "call_id": "sim-security_logs",
+          "summary": "18 条账号异常行为线索，关联同一演示账号与来源。",
+          "cache_hit": false,
+          "evidence_id": "EV-0991ca43334046b3815ed5744f6da9bc"
+        },
+        {
+          "at": "2026-10-17T06:11:29.013232+00:00",
+          "kind": "subagent_end",
+          "agent": "IdentityInvestigationAgent",
+          "reason": "completed",
+          "summary": "IdentityInvestigationAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:29.068052+00:00",
+          "kind": "supervisor_decision",
+          "task": "专业事实已齐备，读取现有手册提出人工审批建议",
+          "agent": "ResponseAgent",
+          "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+        },
+        {
+          "at": "2026-10-17T06:11:29.092698+00:00",
+          "kind": "subagent_start",
+          "agent": "ResponseAgent",
+          "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+        },
+        {
+          "at": "2026-10-17T06:11:29.130909+00:00",
+          "kind": "decision",
+          "agent": "ResponseAgent",
+          "tools": [
+            "playbook"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:29.179153+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "playbook",
+          "agent": "ResponseAgent",
+          "call_id": "sim-playbook",
+          "summary": "命中已审核处置手册；执行前必须明确目标、操作范围与有效期限。",
+          "cache_hit": false,
+          "evidence_id": "EV-7052ebed73ee4eabaaa5d2183a90cf7d"
+        },
+        {
+          "at": "2026-10-17T06:11:29.216603+00:00",
+          "kind": "subagent_end",
+          "agent": "ResponseAgent",
+          "reason": "completed",
+          "summary": "ResponseAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:29.247541+00:00",
+          "kind": "report",
+          "verdict": "malicious"
+        }
+      ],
+      "limits": {
+        "tools": 24,
+        "rounds": 12,
+        "tokens": 64000,
+        "seconds": 300
+      },
+      "reason": "调查完成，等待人工复核",
+      "report": {
+        "engine": "离线模拟策略 / Supervisor + SubAgents 测试模式",
+        "impact": "confirmed",
+        "defense": "passed",
+        "missing": [],
+        "summary": "证据中存在敏感导出事实，需要核查访问范围并提交受控处置。",
+        "verdict": "malicious",
+        "model_used": false,
+        "evidence_ids": [
+          "EV-f3a23b7831ac4564bdaf447c67619930",
+          "EV-ba6fc8afb34a4fc296d9f5bdd44e92eb",
+          "EV-9bd11c58c1ed40c4a1a2a29f636e5790",
+          "EV-262a31954cc447c89b9dfbc2325c8ac7",
+          "EV-0991ca43334046b3815ed5744f6da9bc",
+          "EV-7052ebed73ee4eabaaa5d2183a90cf7d"
+        ],
+        "generated_at": "2026-10-17T06:11:29.247530+00:00",
+        "model_narrative": "离线模拟 Supervisor 已汇总专业调查与建议，等待人工复核。",
+        "recommendations": [
+          "核验所有证据与授权范围",
+          "高风险动作提交人工审批",
+          "核对执行结果与业务影响"
+        ]
+      },
+      "rounds": 10,
+      "stalls": 0,
+      "status": "waiting_review",
+      "tokens": 0,
+      "created": 1792217486.084191,
+      "evidence": [
+        {
+          "at": "2026-10-17T06:11:28.678742+00:00",
+          "id": "EV-f3a23b7831ac4564bdaf447c67619930",
+          "ok": true,
+          "data": {
+            "asset": "运营管理后台 / 生产",
+            "owner": "业务安全组",
+            "importance": "核心业务"
+          },
+          "tool": "asset_context",
+          "title": "查询业务资产与负责人",
+          "source": "模拟连接器 / asset_context",
+          "archive": {
+            "key": "RUN-db0220ed74bf428c938cfa0bfa2cc731/EV-f3a23b7831ac4564bdaf447c67619930.json",
+            "sha256": "9d9436dc58401cfae927bd34543991be8267a208664cfb9518021963a70e6106",
+            "backend": "local"
+          },
+          "summary": "运营管理后台 / 生产，负责人：业务安全组",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.084067+00:00",
+            "path": "/admin/customers/export",
+            "asset": "运营管理后台 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.084067+00:00",
+            "cursor": null,
+            "account": "ops_demo_07",
+            "source_ip": "203.0.113.48"
+          },
+          "content_hash": "f771203710d3b3209eaf9789e3195e2d4104425c0e16340e0e965d1ad869e58c"
+        },
+        {
+          "at": "2026-10-17T06:11:28.712185+00:00",
+          "id": "EV-ba6fc8afb34a4fc296d9f5bdd44e92eb",
+          "ok": true,
+          "data": {
+            "change_id": null,
+            "authorized": false,
+            "scope_matches": false,
+            "within_window": false
+          },
+          "tool": "authorization",
+          "title": "核验变更与扫描授权",
+          "source": "模拟连接器 / authorization",
+          "archive": {
+            "key": "RUN-db0220ed74bf428c938cfa0bfa2cc731/EV-ba6fc8afb34a4fc296d9f5bdd44e92eb.json",
+            "sha256": "1caa2c41cf2d088e68c6dc026e68e173a7a9087b002cce97933ad21be2910225",
+            "backend": "local"
+          },
+          "summary": "未匹配到覆盖该来源、资产与时间窗的授权记录。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.084067+00:00",
+            "path": "/admin/customers/export",
+            "asset": "运营管理后台 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.084067+00:00",
+            "cursor": null,
+            "account": "ops_demo_07",
+            "source_ip": "203.0.113.48"
+          },
+          "content_hash": "4f6f3aac09fe77e1577342943d3c3f14b326f804ad45a678d3f2d47538c8e3c1"
+        },
+        {
+          "at": "2026-10-17T06:11:28.878360+00:00",
+          "id": "EV-9bd11c58c1ed40c4a1a2a29f636e5790",
+          "ok": true,
+          "data": {
+            "account": "ops_demo_07",
+            "mfa_passed": false,
+            "unexpected_login": true,
+            "owner_confirmed_unexpected": true
+          },
+          "tool": "auth_logs",
+          "title": "查询账号认证日志",
+          "source": "模拟连接器 / auth_logs",
+          "archive": {
+            "key": "RUN-db0220ed74bf428c938cfa0bfa2cc731/EV-9bd11c58c1ed40c4a1a2a29f636e5790.json",
+            "sha256": "4fdd34f69008434547eec1c4afe474a93678171f10400969533cdd8fadeea66a",
+            "backend": "local"
+          },
+          "summary": "模拟账号在异常来源登录，账号负责人确认非本人操作；未通过 MFA。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.084067+00:00",
+            "path": "/admin/customers/export",
+            "asset": "运营管理后台 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.084067+00:00",
+            "cursor": null,
+            "account": "ops_demo_07",
+            "source_ip": "203.0.113.48"
+          },
+          "content_hash": "a79beda1cb8875065a9bfad1a49eca66f75c681905f6459fe3d587e53b435dee"
+        },
+        {
+          "at": "2026-10-17T06:11:28.939028+00:00",
+          "id": "EV-262a31954cc447c89b9dfbc2325c8ac7",
+          "ok": true,
+          "data": {
+            "coverage": "complete",
+            "export_rows": 2800,
+            "sensitive_export": true,
+            "application_rejected_invalid_input": false
+          },
+          "tool": "business_audit",
+          "title": "查询应用与敏感操作审计",
+          "source": "模拟连接器 / business_audit",
+          "archive": {
+            "key": "RUN-db0220ed74bf428c938cfa0bfa2cc731/EV-262a31954cc447c89b9dfbc2325c8ac7.json",
+            "sha256": "d690e8026d938672d9a2c22ed4b785585736709607e69c7db2ac3225905e6dd6",
+            "backend": "local"
+          },
+          "summary": "发现异常账号导出 2,800 条模拟客户记录，导出任务执行成功。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.084067+00:00",
+            "path": "/admin/customers/export",
+            "asset": "运营管理后台 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.084067+00:00",
+            "cursor": null,
+            "account": "ops_demo_07",
+            "source_ip": "203.0.113.48"
+          },
+          "content_hash": "c11464cc1f26261f29b91786e56689725f31da15ecb86e8d4c5d9d5fad853653"
+        },
+        {
+          "at": "2026-10-17T06:11:28.969724+00:00",
+          "id": "EV-0991ca43334046b3815ed5744f6da9bc",
+          "ok": true,
+          "data": {
+            "path": "/admin/customers/export",
+            "rule": "异常登录与敏感操作关联",
+            "trace_id": "demo-trace-E2F3CF",
+            "source_ip": "203.0.113.48",
+            "http_status": 200,
+            "final_action": "observe",
+            "request_count": 18,
+            "suspicious_pattern": true
+          },
+          "tool": "security_logs",
+          "title": "查询 WAF 请求与防护动作",
+          "source": "模拟连接器 / security_logs",
+          "archive": {
+            "key": "RUN-db0220ed74bf428c938cfa0bfa2cc731/EV-0991ca43334046b3815ed5744f6da9bc.json",
+            "sha256": "519a5e5af90b54c35c0c3b7a07064fb57dda469212d77e5e7a9c70d5a9627db4",
+            "backend": "local"
+          },
+          "summary": "18 条账号异常行为线索，关联同一演示账号与来源。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.084067+00:00",
+            "path": "/admin/customers/export",
+            "asset": "运营管理后台 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.084067+00:00",
+            "cursor": null,
+            "account": "ops_demo_07",
+            "source_ip": "203.0.113.48"
+          },
+          "content_hash": "366070afb0151aae149ef49ffa7db9d9538002c4d0b5a0122dc733be19c314c0"
+        },
+        {
+          "at": "2026-10-17T06:11:29.178758+00:00",
+          "id": "EV-7052ebed73ee4eabaaa5d2183a90cf7d",
+          "ok": true,
+          "data": {
+            "steps": [
+              "核验原始证据",
+              "联系资产负责人",
+              "审批后模拟临时限制",
+              "复查状态与后续事件"
+            ],
+            "version": "1.2",
+            "document_id": "PB-ACCOUNT-02"
+          },
+          "tool": "playbook",
+          "title": "检索内部处置手册",
+          "source": "模拟连接器 / playbook",
+          "archive": {
+            "key": "RUN-db0220ed74bf428c938cfa0bfa2cc731/EV-7052ebed73ee4eabaaa5d2183a90cf7d.json",
+            "sha256": "762d540051e9101c252246ab16c3fe1f9cebd0d0d557fa52e6549828b3b22df0",
+            "backend": "local"
+          },
+          "summary": "命中已审核处置手册；执行前必须明确目标、操作范围与有效期限。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.084067+00:00",
+            "path": "/admin/customers/export",
+            "asset": "运营管理后台 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.084067+00:00",
+            "cursor": null,
+            "account": "ops_demo_07",
+            "source_ip": "203.0.113.48"
+          },
+          "content_hash": "9cde79eda62238f8fda246c54542a41e2b86a4945a8dc04fbd9280f59c273223"
+        }
+      ],
+      "tool_count": 6,
+      "multi_agent": {
+        "plan": [
+          {
+            "task": "核验目标资产、授权范围和时间窗口",
+            "agent": "TriageAgent",
+            "reason": "核验目标资产、授权范围和时间窗口"
+          },
+          {
+            "task": "账号事件或已发现敏感导出，关联认证与操作记录",
+            "agent": "IdentityInvestigationAgent",
+            "reason": "账号事件或已发现敏感导出，关联认证与操作记录"
+          },
+          {
+            "task": "专业事实已齐备，读取现有手册提出人工审批建议",
+            "agent": "ResponseAgent",
+            "reason": "专业事实已齐备，读取现有手册提出人工审批建议"
+          }
+        ],
+        "phase": "supervisor",
+        "stalls": 0,
+        "results": [
+          {
+            "agent": "TriageAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "TriageAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-f3a23b7831ac4564bdaf447c67619930",
+              "EV-ba6fc8afb34a4fc296d9f5bdd44e92eb"
+            ]
+          },
+          {
+            "agent": "IdentityInvestigationAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "IdentityInvestigationAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-f3a23b7831ac4564bdaf447c67619930",
+              "EV-ba6fc8afb34a4fc296d9f5bdd44e92eb",
+              "EV-9bd11c58c1ed40c4a1a2a29f636e5790",
+              "EV-262a31954cc447c89b9dfbc2325c8ac7",
+              "EV-0991ca43334046b3815ed5744f6da9bc"
+            ]
+          },
+          {
+            "agent": "ResponseAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "ResponseAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-f3a23b7831ac4564bdaf447c67619930",
+              "EV-ba6fc8afb34a4fc296d9f5bdd44e92eb",
+              "EV-9bd11c58c1ed40c4a1a2a29f636e5790",
+              "EV-262a31954cc447c89b9dfbc2325c8ac7",
+              "EV-0991ca43334046b3815ed5744f6da9bc",
+              "EV-7052ebed73ee4eabaaa5d2183a90cf7d"
+            ]
+          }
+        ],
+        "active_agent": null,
+        "synced_messages": 11,
+        "pending_delegation": null
+      },
+      "active_seconds": 0.07822445100282494,
+      "config_fingerprint": "a0cbc1dd333b0a6b75538d48780ebcea99473a037cefc0905210db960e2a18fc"
+    },
+    "missing_logs": {
+      "id": "RUN-4c1737d03d8b40daa0f1b3df759559f4",
+      "org": "demo",
+      "case": {
+        "id": "SEC-20261017-DADAB6",
+        "ip": "198.51.100.72",
+        "name": "支付接口异常请求 · 应用日志缺失",
+        "path": "/api/payment/callback",
+        "rule": "可疑请求参数",
+        "asset": "支付网关 / 生产",
+        "count": 37,
+        "error": null,
+        "owner": "支付应用组",
+        "trace": [],
+        "action": null,
+        "report": null,
+        "review": null,
+        "status": "new",
+        "tenant": "demo-retail",
+        "ticket": null,
+        "version": 0,
+        "approval": null,
+        "category": "web",
+        "evidence": [],
+        "scenario": "missing_logs",
+        "severity": "high",
+        "execution": null,
+        "simulated": true,
+        "created_at": "2026-10-17T06:11:26.113383+00:00",
+        "updated_at": "2026-10-17T06:11:26.113383+00:00",
+        "verification": null
+      },
+      "mode": "simulated",
+      "owner": "demo-analyst",
+      "trace": [
+        {
+          "at": "2026-10-17T06:11:29.241126+00:00",
+          "kind": "supervisor_decision",
+          "task": "核验目标资产、授权范围和时间窗口",
+          "agent": "TriageAgent",
+          "reason": "核验目标资产、授权范围和时间窗口"
+        },
+        {
+          "at": "2026-10-17T06:11:29.267637+00:00",
+          "kind": "subagent_start",
+          "agent": "TriageAgent",
+          "reason": "核验目标资产、授权范围和时间窗口"
+        },
+        {
+          "at": "2026-10-17T06:11:29.294804+00:00",
+          "kind": "decision",
+          "agent": "TriageAgent",
+          "tools": [
+            "asset_context",
+            "authorization"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:29.317516+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "asset_context",
+          "agent": "TriageAgent",
+          "call_id": "sim-asset_context",
+          "summary": "支付网关 / 生产，负责人：支付应用组",
+          "cache_hit": false,
+          "evidence_id": "EV-d36feeaa6993464884596c7bb7cdf2c0"
+        },
+        {
+          "at": "2026-10-17T06:11:29.336858+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "authorization",
+          "agent": "TriageAgent",
+          "call_id": "sim-authorization",
+          "summary": "未匹配到覆盖该来源、资产与时间窗的授权记录。",
+          "cache_hit": false,
+          "evidence_id": "EV-fcdae475c879421e9175cd4ef5f2fee5"
+        },
+        {
+          "at": "2026-10-17T06:11:29.360928+00:00",
+          "kind": "subagent_end",
+          "agent": "TriageAgent",
+          "reason": "completed",
+          "summary": "TriageAgent 离线模拟调查结束；事实与建议须由人工复核。"
+        },
+        {
+          "at": "2026-10-17T06:11:29.385253+00:00",
+          "kind": "supervisor_decision",
+          "task": "Web 告警需核对请求、防护和业务审计，授权也须验证行为",
+          "agent": "WebInvestigationAgent",
+          "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+        },
+        {
+          "at": "2026-10-17T06:11:29.406390+00:00",
+          "kind": "subagent_start",
+          "agent": "WebInvestigationAgent",
+          "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+        },
+        {
+          "at": "2026-10-17T06:11:29.432188+00:00",
+          "kind": "decision",
+          "agent": "WebInvestigationAgent",
+          "tools": [
+            "security_logs",
+            "business_audit"
+          ]
+        },
+        {
+          "at": "2026-10-17T06:11:29.455647+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "security_logs",
+          "agent": "WebInvestigationAgent",
+          "call_id": "sim-security_logs",
+          "summary": "37 条关联请求；WAF 观察 / 部分放行。响应码不能证明攻击成功。",
+          "cache_hit": false,
+          "evidence_id": "EV-a8cda2947c8148bf8ee095898f3e4a81"
+        },
+        {
+          "at": "2026-10-17T06:11:29.481293+00:00",
+          "ok": true,
+          "kind": "subagent_tool",
+          "tool": "business_audit",
+          "agent": "WebInvestigationAgent",
+          "call_id": "sim-business_audit",
+          "summary": "应用日志缺失：当前角色无法取得完整审计数据，不能判断业务影响。",
+          "cache_hit": false,
+          "evidence_id": "EV-45c0f1fb6266425c8dadc148639c6f41"
+        },
+        {
+          "at": "2026-10-17T06:11:29.481326+00:00",
+          "kind": "handoff",
+          "reason": "查询结果不完整，需要人工补充日志或权限"
+        },
+        {
+          "at": "2026-10-17T06:11:29.481375+00:00",
+          "kind": "subagent_end",
+          "agent": "WebInvestigationAgent",
+          "reason": "查询结果不完整，需要人工补充日志或权限",
+          "summary": "查询结果不完整，需要人工补充日志或权限"
+        }
+      ],
+      "limits": {
+        "tools": 24,
+        "rounds": 12,
+        "tokens": 64000,
+        "seconds": 300
+      },
+      "reason": "查询结果不完整，需要人工补充日志或权限",
+      "report": null,
+      "rounds": 5,
+      "stalls": 0,
+      "status": "needs_attention",
+      "tokens": 0,
+      "created": 1792217486.113511,
+      "evidence": [
+        {
+          "at": "2026-10-17T06:11:29.316642+00:00",
+          "id": "EV-d36feeaa6993464884596c7bb7cdf2c0",
+          "ok": true,
+          "data": {
+            "asset": "支付网关 / 生产",
+            "owner": "支付应用组",
+            "importance": "核心业务"
+          },
+          "tool": "asset_context",
+          "title": "查询业务资产与负责人",
+          "source": "模拟连接器 / asset_context",
+          "archive": {
+            "key": "RUN-4c1737d03d8b40daa0f1b3df759559f4/EV-d36feeaa6993464884596c7bb7cdf2c0.json",
+            "sha256": "8e25e68fbbb5029f080c311db9b482347d9697646b46bd87cf821e260ab85e63",
+            "backend": "local"
+          },
+          "summary": "支付网关 / 生产，负责人：支付应用组",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.113383+00:00",
+            "path": "/api/payment/callback",
+            "asset": "支付网关 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.113383+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "198.51.100.72"
+          },
+          "content_hash": "1f1ffedba7e9fb1a6cb08bc4eba28fb97c384b322a304e1ec81a8d5221d97fed"
+        },
+        {
+          "at": "2026-10-17T06:11:29.336586+00:00",
+          "id": "EV-fcdae475c879421e9175cd4ef5f2fee5",
+          "ok": true,
+          "data": {
+            "change_id": null,
+            "authorized": false,
+            "scope_matches": false,
+            "within_window": false
+          },
+          "tool": "authorization",
+          "title": "核验变更与扫描授权",
+          "source": "模拟连接器 / authorization",
+          "archive": {
+            "key": "RUN-4c1737d03d8b40daa0f1b3df759559f4/EV-fcdae475c879421e9175cd4ef5f2fee5.json",
+            "sha256": "09d6e45612697041beb6264419b66710f09028e2e6fef3b3a7ab1e4542eb9612",
+            "backend": "local"
+          },
+          "summary": "未匹配到覆盖该来源、资产与时间窗的授权记录。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.113383+00:00",
+            "path": "/api/payment/callback",
+            "asset": "支付网关 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.113383+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "198.51.100.72"
+          },
+          "content_hash": "635f075d686cc1b0fe663e7830f49f6328e5d4ce1492ae2aed0bfa3bba4c3a2c"
+        },
+        {
+          "at": "2026-10-17T06:11:29.455370+00:00",
+          "id": "EV-a8cda2947c8148bf8ee095898f3e4a81",
+          "ok": true,
+          "data": {
+            "path": "/api/payment/callback",
+            "rule": "可疑请求参数",
+            "trace_id": "demo-trace-DADAB6",
+            "source_ip": "198.51.100.72",
+            "http_status": 200,
+            "final_action": "observe",
+            "request_count": 37,
+            "suspicious_pattern": true
+          },
+          "tool": "security_logs",
+          "title": "查询 WAF 请求与防护动作",
+          "source": "模拟连接器 / security_logs",
+          "archive": {
+            "key": "RUN-4c1737d03d8b40daa0f1b3df759559f4/EV-a8cda2947c8148bf8ee095898f3e4a81.json",
+            "sha256": "6f48d2dfbe0b5239219eb0f130b8f00ef9c76f06833b08817a676ba450bd13f0",
+            "backend": "local"
+          },
+          "summary": "37 条关联请求；WAF 观察 / 部分放行。响应码不能证明攻击成功。",
+          "complete": true,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.113383+00:00",
+            "path": "/api/payment/callback",
+            "asset": "支付网关 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.113383+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "198.51.100.72"
+          },
+          "content_hash": "b96b2a0fc0a62a1077bf355febd7cf38cdb96a300ba6b6681bb5dd290b20c6b1"
+        },
+        {
+          "at": "2026-10-17T06:11:29.480984+00:00",
+          "id": "EV-45c0f1fb6266425c8dadc148639c6f41",
+          "ok": true,
+          "data": {
+            "coverage": "missing",
+            "export_rows": 0,
+            "sensitive_export": false,
+            "application_rejected_invalid_input": true
+          },
+          "tool": "business_audit",
+          "title": "查询应用与敏感操作审计",
+          "source": "模拟连接器 / business_audit",
+          "archive": {
+            "key": "RUN-4c1737d03d8b40daa0f1b3df759559f4/EV-45c0f1fb6266425c8dadc148639c6f41.json",
+            "sha256": "6275de1e1a834f867c5a81816569ac75c7745d82ad6c1129f54da5ea1f1006e1",
+            "backend": "local"
+          },
+          "summary": "应用日志缺失：当前角色无法取得完整审计数据，不能判断业务影响。",
+          "complete": false,
+          "simulated": true,
+          "query_scope": {
+            "end": "2026-10-17T06:41:26.113383+00:00",
+            "path": "/api/payment/callback",
+            "asset": "支付网关 / 生产",
+            "limit": 50,
+            "start": "2026-10-17T05:41:26.113383+00:00",
+            "cursor": null,
+            "account": null,
+            "source_ip": "198.51.100.72"
+          },
+          "content_hash": "d9d60de6a3fb6a677761508bd6cdbb6ae4ad224d1c0ef8afa834c69e21f3c8ef"
+        }
+      ],
+      "tool_count": 4,
+      "multi_agent": {
+        "plan": [
+          {
+            "task": "核验目标资产、授权范围和时间窗口",
+            "agent": "TriageAgent",
+            "reason": "核验目标资产、授权范围和时间窗口"
+          },
+          {
+            "task": "Web 告警需核对请求、防护和业务审计，授权也须验证行为",
+            "agent": "WebInvestigationAgent",
+            "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为"
+          }
+        ],
+        "phase": "specialist",
+        "stalls": 0,
+        "results": [
+          {
+            "agent": "TriageAgent",
+            "reason": "",
+            "status": "completed",
+            "summary": "TriageAgent 离线模拟调查结束；事实与建议须由人工复核。",
+            "need_more": [],
+            "evidence_ids": [
+              "EV-d36feeaa6993464884596c7bb7cdf2c0",
+              "EV-fcdae475c879421e9175cd4ef5f2fee5"
+            ]
+          },
+          {
+            "agent": "WebInvestigationAgent",
+            "reason": "查询结果不完整，需要人工补充日志或权限",
+            "status": "needs_attention",
+            "summary": "查询结果不完整，需要人工补充日志或权限",
+            "need_more": [
+              "人工核查日志、权限或模型配置"
+            ],
+            "evidence_ids": []
+          }
+        ],
+        "active_agent": "WebInvestigationAgent",
+        "synced_messages": 7,
+        "pending_delegation": {
+          "task": "Web 告警需核对请求、防护和业务审计，授权也须验证行为",
+          "agent": "WebInvestigationAgent",
+          "reason": "Web 告警需核对请求、防护和业务审计，授权也须验证行为",
+          "call_id": "delegate-1"
+        }
+      },
+      "active_seconds": 0.036210218998348864,
+      "config_fingerprint": "a0cbc1dd333b0a6b75538d48780ebcea99473a037cefc0905210db960e2a18fc"
+    }
+  }
+}

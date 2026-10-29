@@ -1,0 +1,12 @@
+FROM python:3.12-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+WORKDIR /app
+COPY requirements.txt requirements-platform.txt requirements-platform.lock ./
+RUN pip install --no-cache-dir -r requirements-platform.txt -c requirements-platform.lock && useradd --create-home --uid 10001 secops
+COPY --chown=secops:secops app ./app
+COPY --chown=secops:secops migrations ./migrations
+COPY --chown=secops:secops alembic.ini ./
+RUN mkdir /app/data && chown secops:secops /app/data
+USER secops
+EXPOSE 8080
+CMD ["python", "-m", "uvicorn", "app.platform_app:app", "--host", "0.0.0.0", "--port", "8080"]
